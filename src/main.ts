@@ -5,6 +5,8 @@ import Character from './objects/character';
 import { timeManagerService } from './services/timeManager.service';
 import { nameTagService } from './services/nameTag.service';
 import { mapService } from './services/map.service';
+import { cameraService } from './services/camera.service';
+import { graphicsService } from './services/graphics.service';
 
 const engine = Matter.Engine.create();
 export const world = engine.world;
@@ -23,11 +25,9 @@ Matter.Render.run(render);
 
 mapService.createLevel();
 
-export const player = new Character(400, 300);
+export const player = new Character(0, 300);
 
 Matter.World.add(world, player.body);
-
-let viewDistance = 500;
 
 function gameLoop(): void {
 
@@ -35,10 +35,8 @@ function gameLoop(): void {
     playerService.logic();
     Matter.Engine.update(engine);
 
-    Matter.Render.lookAt(render, {
-        min: { x: player.body.position.x - viewDistance, y: player.body.position.y - viewDistance },
-        max: { x: player.body.position.x + viewDistance, y: player.body.position.y + viewDistance }
-    });
+    cameraService.cameraToPlayer();
+    graphicsService.updateViewportCalculations();
 
     nameTagService.moveMainTagToPlayer();
 
@@ -49,7 +47,3 @@ gameLoop();
 document.addEventListener('keydown', event => keyManagerService.handleKeyDown(event));
 document.addEventListener('keyup', event => keyManagerService.handleKeyUp(event));
 
-document.addEventListener('wheel', event => {
-    const delta = Math.sign(event.deltaY);
-    viewDistance += delta * viewDistance / 2;
-});

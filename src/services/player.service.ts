@@ -29,8 +29,8 @@ class PlayerService {
         const movement = player.movement;
         const playerVelocity = player.body.velocity;
 
-        if (player.xSpeed <= 3 && player.movement.right) player.xSpeed += 10 * timeManagerService.deltaTime;
-        if (player.xSpeed >= -3 && player.movement.left) player.xSpeed -= 10 * timeManagerService.deltaTime;
+        if (player.xSpeed <= 3 && player.movement.right) player.xSpeed += 15 * timeManagerService.deltaTime;
+        if (player.xSpeed >= -3 && player.movement.left) player.xSpeed -= 15 * timeManagerService.deltaTime;
 
         if (!player.movement.left && !player.movement.right && player.xSpeed !== 0) {
             if (player.xSpeed > 0) {
