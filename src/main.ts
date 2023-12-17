@@ -17,7 +17,8 @@ export const render = Matter.Render.create({
     engine: engine,
     options: {
         width: window.innerWidth,
-        height: window.innerHeight
+        height: window.innerHeight,
+        pixelRatio: window.devicePixelRatio
     }
 });
 
@@ -52,4 +53,5 @@ window.addEventListener('resize', () => {
     render.options.height = window.innerHeight;
     render.canvas.width = window.innerWidth;
     render.canvas.height = window.innerHeight;
+    Matter.Render.setPixelRatio(render, window.devicePixelRatio);
 });
