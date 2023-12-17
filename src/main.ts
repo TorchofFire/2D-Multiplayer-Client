@@ -47,3 +47,9 @@ gameLoop();
 document.addEventListener('keydown', event => keyManagerService.handleKeyDown(event));
 document.addEventListener('keyup', event => keyManagerService.handleKeyUp(event));
 
+window.addEventListener('resize', () => {
+    render.options.width = window.innerWidth;
+    render.options.height = window.innerHeight;
+    render.canvas.width = window.innerWidth;
+    render.canvas.height = window.innerHeight;
+});
