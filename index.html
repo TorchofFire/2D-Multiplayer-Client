@@ -9,8 +9,22 @@
   </head>
   
   <body>
+    <div class="graphics">
+    </div>
     <div class="overlay">
-        <div class="nametag">Torch</div>
+        <div id="settings-button">⚙️</div>
+        <div id="settings-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <label for="serverIpInput">Server IP Address:</label>
+                <input type="text" id="serverIpInput" placeholder="Enter server IP">
+        
+                <label for="usernameInput">Username:</label>
+                <input type="text" id="usernameInput" placeholder="Enter username">
+        
+                <button id="saveSettingsButton">Save Settings</button>
+            </div>
+        </div>
     </div>
     <div class="debug"></div>
   </body>

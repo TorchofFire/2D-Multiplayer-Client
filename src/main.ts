@@ -3,10 +3,12 @@ import { keyManagerService } from './services/keyManager.service';
 import { playerService } from './services/player.service';
 import Character from './objects/character';
 import { timeManagerService } from './services/timeManager.service';
-import { nameTagService } from './services/nameTag.service';
 import { mapService } from './services/map.service';
 import { cameraService } from './services/camera.service';
 import { graphicsService } from './services/graphics.service';
+import { setupSettingsModal } from './settings';
+
+setupSettingsModal();
 
 const engine = Matter.Engine.create();
 export const world = engine.world;
@@ -38,8 +40,6 @@ function gameLoop(): void {
 
     cameraService.cameraToPlayer();
     graphicsService.updateViewportCalculations();
-
-    nameTagService.moveMainTagToPlayer();
 
     requestAnimationFrame(gameLoop);
 }
