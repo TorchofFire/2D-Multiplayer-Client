@@ -1,5 +1,5 @@
 
-export type WSPacket = {
+export type WSPacketToServer = {
     username: string;
     positionX: number;
     positionY: number;
