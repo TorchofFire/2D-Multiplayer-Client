@@ -1,3 +1,6 @@
+import { player } from './main';
+import { webSocketService } from './services/websocket.service';
+
 export function setupSettingsModal(): void {
     const settingsButton = document.getElementById('settings-button');
     const modal = document.getElementById('settings-modal');
@@ -27,9 +30,9 @@ export function setupSettingsModal(): void {
         if (!modal) return;
         const serverIp = serverIpInput?.value;
         const username = usernameInput?.value;
+        player.username = username;
 
-        console.log('Server IP:', serverIp);
-        console.log('Username:', username);
+        webSocketService.connectToServer(serverIp);
 
         modal.style.display = 'none';
     });

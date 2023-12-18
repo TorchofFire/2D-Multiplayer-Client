@@ -8,6 +8,8 @@ export default class Character {
         });
     }
 
+    username: string | null = null;
+
     xSpeed = 0;
     // ySpeed is fully handled by the physics engine
 

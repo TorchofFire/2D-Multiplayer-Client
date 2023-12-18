@@ -7,6 +7,7 @@ import { mapService } from './services/map.service';
 import { cameraService } from './services/camera.service';
 import { graphicsService } from './services/graphics.service';
 import { setupSettingsModal } from './settings';
+import { webSocketService } from './services/websocket.service';
 
 setupSettingsModal();
 
@@ -37,6 +38,8 @@ function gameLoop(): void {
     timeManagerService.logic();
     playerService.logic();
     Matter.Engine.update(engine);
+
+    webSocketService.netLogic();
 
     cameraService.cameraToPlayer();
     graphicsService.updateViewportCalculations();
