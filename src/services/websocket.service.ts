@@ -1,11 +1,12 @@
 import { player } from '../main';
-import { WSPacketToServer } from '../types/WSPacket.type';
+import { WSPlayerPacket } from '../types/WSPacket.type';
+import { multiplayerService } from './multiplayer.service';
 
 class WebSocketService {
 
     ws: WebSocket | undefined;
     private isReady = false;
-    private lastPacket: WSPacketToServer | null = null;
+    private lastPacket: WSPlayerPacket | null = null;
 
     public connectToServer(ip: string): void {
         this.ws = new WebSocket(`ws://${ip}`);
@@ -19,18 +20,19 @@ class WebSocketService {
         this.ws.onclose = (): void => {
             this.isReady = false;
         };
-        this.ws.onmessage = (data): void => {
-            console.log('received: %s', data);
+        this.ws.onmessage = (event): void => {
+            console.log(JSON.parse(event.data));
+            multiplayerService.updatePlayer(JSON.parse(event.data));
         };
     }
 
-    private sendPacket(packet: WSPacketToServer): void {
+    private sendPacket(packet: WSPlayerPacket): void {
         this.ws?.send(JSON.stringify(packet));
     }
 
     public netLogic(): void {
         if (!this.isReady || !player.username) return;
-        const packet: WSPacketToServer = {
+        const packet: WSPlayerPacket = {
             username: player.username,
             keypresses: {
                 down: player.movement.down,
@@ -38,16 +40,13 @@ class WebSocketService {
                 right: player.movement.right,
                 up: player.movement.up
             },
-            positionX: player.body.position.x,
-            positionY: player.body.position.y
+            positionX: Math.round(player.body.position.x),
+            positionY: Math.round(player.body.position.y)
         };
-        if (this.lastPacket) {
-            if (
-                Math.round(packet.positionX) === Math.round(this.lastPacket?.positionX)
-                && Math.round(packet.positionX) === Math.round(this.lastPacket?.positionX)
-            ) {
-                return;
-            }
+        if (this.lastPacket
+            && packet.positionX === this.lastPacket.positionX
+            && packet.positionX === this.lastPacket.positionX) {
+            return;
         }
         this.lastPacket = packet;
         this.sendPacket(packet);

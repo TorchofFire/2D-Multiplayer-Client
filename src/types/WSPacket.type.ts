@@ -1,5 +1,5 @@
 
-export type WSPacketToServer = {
+export type WSPlayerPacket = {
     username: string;
     positionX: number;
     positionY: number;
