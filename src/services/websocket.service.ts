@@ -19,9 +19,9 @@ class WebSocketService {
         };
         this.ws.onclose = (): void => {
             this.isReady = false;
+            this.ws = undefined;
         };
         this.ws.onmessage = (event): void => {
-            console.log(JSON.parse(event.data));
             multiplayerService.updatePlayer(JSON.parse(event.data));
         };
     }
@@ -45,7 +45,7 @@ class WebSocketService {
         };
         if (this.lastPacket
             && packet.positionX === this.lastPacket.positionX
-            && packet.positionX === this.lastPacket.positionX) {
+            && packet.positionY === this.lastPacket.positionY) {
             return;
         }
         this.lastPacket = packet;

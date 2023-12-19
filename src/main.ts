@@ -8,6 +8,7 @@ import { cameraService } from './services/camera.service';
 import { graphicsService } from './services/graphics.service';
 import { setupSettingsModal } from './settings';
 import { webSocketService } from './services/websocket.service';
+import { multiplayerService } from './services/multiplayer.service';
 
 setupSettingsModal();
 
@@ -37,7 +38,8 @@ function gameLoop(): void {
 
     timeManagerService.logic();
     playerService.logic();
-    Matter.Engine.update(engine);
+    multiplayerService.inBetween();
+    Matter.Engine.update(engine, timeManagerService.deltaTime * 2500);
 
     webSocketService.netLogic();
 

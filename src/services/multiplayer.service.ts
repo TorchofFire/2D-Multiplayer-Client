@@ -28,6 +28,12 @@ class MultiplayerService {
         player.movement = packet.keypresses;
     }
 
+    public inBetween(): void {
+        for (const player of this.players) {
+            Matter.Body.setAngle(player.body, 0);
+        }
+    }
+
 }
 
 export const multiplayerService = new MultiplayerService();

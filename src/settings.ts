@@ -32,7 +32,7 @@ export function setupSettingsModal(): void {
         const username = usernameInput?.value;
         player.username = username;
 
-        webSocketService.connectToServer(serverIp);
+        if (!webSocketService.ws) webSocketService.connectToServer(serverIp);
 
         modal.style.display = 'none';
     });
