@@ -11,7 +11,6 @@ class MultiplayerService {
     public newPlayer(packet: WSPlayerPacket): void {
         if (this.playersMap.has(packet.username)) return;
         const player = new Character(packet.positionX, packet.positionY);
-        player.movement = packet.keypresses;
         player.username = packet.username;
         this.players.push(player);
         this.playersMap.set(packet.username, player);
@@ -28,13 +27,12 @@ class MultiplayerService {
         player.username = packet.username;
         player.body.position.x = packet.positionX;
         player.body.position.y = packet.positionY;
-        player.movement = packet.keypresses;
+        Matter.Body.setVelocity(player.body, packet.velocity);
     }
 
     public inBetween(): void {
         for (const player of this.players) {
             Matter.Body.setAngle(player.body, 0);
-            Matter.Body.setVelocity(player.body, { x: 0, y: 0 }); // TODO: get the correct velocity
         }
     }
 

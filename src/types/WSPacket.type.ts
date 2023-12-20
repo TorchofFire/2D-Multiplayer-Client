@@ -1,7 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import Matter from 'matter-js';
 
 export type WSPlayerPacket = {
     username: string;
     positionX: number;
     positionY: number;
-    keypresses: {up: boolean; down: boolean; left: boolean; right: boolean};
+    velocity: Matter.Vector;
 };
+
+export function isPlayerPacket(object: any): object is WSPlayerPacket {
+    return 'username' in object; // username is a unique field to WSPlayerPacket
+}

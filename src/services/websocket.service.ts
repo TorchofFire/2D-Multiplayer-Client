@@ -1,5 +1,5 @@
 import { player } from '../main';
-import { WSPlayerPacket } from '../types/WSPacket.type';
+import { WSPlayerPacket, isPlayerPacket } from '../types/WSPacket.type';
 import { multiplayerService } from './multiplayer.service';
 
 class WebSocketService {
@@ -22,7 +22,8 @@ class WebSocketService {
             this.ws = undefined;
         };
         this.ws.onmessage = (event): void => {
-            multiplayerService.updatePlayer(JSON.parse(event.data));
+            const packet = JSON.parse(`${event.data}`);
+            if (isPlayerPacket(packet)) multiplayerService.updatePlayer(packet);
         };
     }
 
@@ -32,14 +33,10 @@ class WebSocketService {
 
     public netLogic(): void {
         if (!this.isReady || !player.username) return;
+        const roundedVelocity = { x: Math.round(player.body.velocity.x), y: Math.round(player.body.velocity.y) };
         const packet: WSPlayerPacket = {
             username: player.username,
-            keypresses: {
-                down: player.movement.down,
-                left: player.movement.left,
-                right: player.movement.right,
-                up: player.movement.up
-            },
+            velocity: roundedVelocity,
             positionX: Math.round(player.body.position.x),
             positionY: Math.round(player.body.position.y)
         };
