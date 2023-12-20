@@ -12,10 +12,11 @@ class MultiplayerService {
         if (this.playersMap.has(packet.username)) return;
         const player = new Character(packet.positionX, packet.positionY);
         player.movement = packet.keypresses;
+        player.username = packet.username;
         this.players.push(player);
         this.playersMap.set(packet.username, player);
         Matter.World.add(world, player.body);
-        nameTagService.newTag(player.username!);
+        nameTagService.newTag(player.username);
     }
 
     public updatePlayer(packet: WSPlayerPacket): void {
@@ -33,6 +34,7 @@ class MultiplayerService {
     public inBetween(): void {
         for (const player of this.players) {
             Matter.Body.setAngle(player.body, 0);
+            Matter.Body.setVelocity(player.body, { x: 0, y: 0 }); // TODO: get the correct velocity
         }
     }
 

@@ -10,7 +10,6 @@ class NameTagService {
     nametagsMap: Map<string, HTMLDivElement> = new Map();
 
     private moveMainTagToPlayer(): void {
-        console.log(mainNametag);
         if (!mainNametag || !render.options.width) return;
         graphicsService.moveDivToBody(mainNametag, player.body, { x: 0, y: -50 });
     }
@@ -25,7 +24,7 @@ class NameTagService {
             if (!nametag.textContent) continue;
             const mPlayer = multiplayerService.playersMap.get(nametag.textContent);
             if (!mPlayer || !render.options.width) return;
-            graphicsService.moveDivToBody(mainNametag, mPlayer.body, { x: 0, y: -50 });
+            graphicsService.moveDivToBody(nametag, mPlayer.body, { x: 0, y: -50 });
         }
     }
 
@@ -33,6 +32,7 @@ class NameTagService {
         if (this.nametagsMap.has(playerName)) return;
         const nametag = document.createElement('div');
         nametag.className = 'nametag';
+        nametag.textContent = playerName;
         graphicsDiv.appendChild(nametag);
         this.nametags.push(nametag);
         this.nametagsMap.set(playerName, nametag);
