@@ -1,6 +1,7 @@
 import Matter from 'matter-js';
 import { world } from '../main';
 import { degreeToRadian } from '../helpers';
+import { moveableObjectService } from './moveableObjects.service';
 
 class MapService {
 
@@ -16,7 +17,7 @@ class MapService {
 
         // mid
         this.addRect({ x: 0, y: 400 }, 250, 20, { isStatic: true });
-        this.addRect({ x: 0, y: 300 }, 100, 100);
+        moveableObjectService.objects.push(this.addRect({ x: 0, y: 300 }, 100, 100, { label: 'mid square' }));
         this.addRect({ x: 0, y: 0 }, 400, 20, { isStatic: true });
         this.addRect({ x: -300, y: 200 }, 20, 500, { isStatic: true });
         this.addRect({ x: -327, y: -50 }, 75, 20, { isStatic: true });
@@ -34,7 +35,7 @@ class MapService {
         this.addRect({ x: -350, y: 1190 }, 300, 300, { isStatic: true });
         this.addRect({ x: 350, y: 1190 }, 300, 300, { isStatic: true });
         this.addRect({ x: 0, y: 1490 }, 400, 300, { isStatic: true });
-        this.addCirc({ x: 0, y: 1350 }, 50);
+        moveableObjectService.objects.push(this.addCirc({ x: 0, y: 1350 }, 50, { label: 'underground circle' }));
         this.addRect({ x: 0, y: 1025 }, 50, 250, { isStatic: true });
 
         // left side
@@ -43,7 +44,7 @@ class MapService {
         this.addRect({ x: -1400, y: 550 }, 500, 20, { isStatic: true });
         this.addRect({ x: -1900, y: 350 }, 300, 20, { isStatic: true });
         this.addRect({ x: -1100, y: 150 }, 1100, 20, { isStatic: true });
-        this.addRect({ x: -800, y: 50 }, 100, 100);
+        moveableObjectService.objects.push(this.addRect({ x: -800, y: 50 }, 100, 100, { label: 'left square' }));
         this.addRect({ x: -1000, y: -100 }, 700, 20, { isStatic: true });
         this.addRect({ x: -950, y: -210 }, 200, 200, { isStatic: true });
         this.addRect({ x: -750, y: -310 }, 200, 400, { isStatic: true });
@@ -59,7 +60,7 @@ class MapService {
         this.addRect({ x: 1400, y: 550 }, 500, 20, { isStatic: true });
         this.addRect({ x: 1900, y: 350 }, 300, 20, { isStatic: true });
         this.addRect({ x: 1100, y: 150 }, 1100, 20, { isStatic: true });
-        this.addRect({ x: 800, y: 50 }, 100, 100);
+        moveableObjectService.objects.push(this.addRect({ x: 800, y: 50 }, 100, 100, { label: 'right square' }));
         this.addRect({ x: 1000, y: -100 }, 700, 20, { isStatic: true });
         this.addRect({ x: 950, y: -210 }, 200, 200, { isStatic: true });
         this.addRect({ x: 750, y: -310 }, 200, 400, { isStatic: true });
@@ -76,8 +77,10 @@ class MapService {
         return rect;
     }
 
-    private addCirc(position: Matter.Vector, radius: number, options?: Matter.IChamferableBodyDefinition): void {
-        Matter.World.add(world, Matter.Bodies.circle(position.x, position.y, radius, options));
+    private addCirc(position: Matter.Vector, radius: number, options?: Matter.IChamferableBodyDefinition): Matter.Body {
+        const circ = Matter.Bodies.circle(position.x, position.y, radius, options);
+        Matter.World.add(world, circ);
+        return circ;
     }
 
     private addTrap(position: Matter.Vector, width: number, height: number, slope: number, options?: Matter.IChamferableBodyDefinition): Matter.Body {

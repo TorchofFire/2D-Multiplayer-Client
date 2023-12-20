@@ -25,8 +25,7 @@ class MultiplayerService {
             return;
         }
         player.username = packet.username;
-        player.body.position.x = packet.positionX;
-        player.body.position.y = packet.positionY;
+        Matter.Body.setPosition(player.body, { x: packet.positionX, y: packet.positionY });
         Matter.Body.setVelocity(player.body, packet.velocity);
     }
 

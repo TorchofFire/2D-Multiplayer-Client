@@ -1,5 +1,6 @@
 import { player } from '../main';
-import { WSPlayerPacket, isPlayerPacket } from '../types/WSPacket.type';
+import { WSPlayerPacket, isMovableObjectPacket, isPlayerPacket } from '../types/WSPacket.type';
+import { moveableObjectService } from './moveableObjects.service';
 import { multiplayerService } from './multiplayer.service';
 
 class WebSocketService {
@@ -24,6 +25,7 @@ class WebSocketService {
         this.ws.onmessage = (event): void => {
             const packet = JSON.parse(`${event.data}`);
             if (isPlayerPacket(packet)) multiplayerService.updatePlayer(packet);
+            if (isMovableObjectPacket(packet)) moveableObjectService.updateObject(packet);
         };
     }
 
