@@ -9,6 +9,7 @@ import { graphicsService } from './services/graphics.service';
 import { setupSettingsModal } from './settings';
 import { webSocketService } from './services/websocket.service';
 import { multiplayerService } from './services/multiplayer.service';
+import { nameTagService } from './services/nameTag.service';
 
 setupSettingsModal();
 
@@ -45,6 +46,7 @@ function gameLoop(): void {
 
     cameraService.cameraToPlayer();
     graphicsService.updateViewportCalculations();
+    nameTagService.moveTagsToPlayers();
 
     requestAnimationFrame(gameLoop);
 }

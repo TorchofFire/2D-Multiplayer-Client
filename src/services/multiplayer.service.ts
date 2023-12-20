@@ -2,6 +2,7 @@ import Matter from 'matter-js';
 import Character from '../objects/character';
 import { WSPlayerPacket } from '../types/WSPacket.type';
 import { world } from '../main';
+import { nameTagService } from './nameTag.service';
 
 class MultiplayerService {
     players: Character[] = [];
@@ -14,6 +15,7 @@ class MultiplayerService {
         this.players.push(player);
         this.playersMap.set(packet.username, player);
         Matter.World.add(world, player.body);
+        nameTagService.newTag(player.username!);
     }
 
     public updatePlayer(packet: WSPlayerPacket): void {

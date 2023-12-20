@@ -1,4 +1,5 @@
 import { player } from './main';
+import { nameTagService } from './services/nameTag.service';
 import { webSocketService } from './services/websocket.service';
 
 export function setupSettingsModal(): void {
@@ -30,7 +31,9 @@ export function setupSettingsModal(): void {
         if (!modal) return;
         const serverIp = serverIpInput?.value;
         const username = usernameInput?.value;
+        if (username.length < 1) return;
         player.username = username;
+        nameTagService.updateMainTag(username);
 
         if (!webSocketService.ws) webSocketService.connectToServer(serverIp);
 

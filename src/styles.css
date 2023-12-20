@@ -27,6 +27,18 @@ body, html {
   overflow: hidden;
 }
 
+.graphics {
+  position: absolute;
+  color: #f6f6f6;
+  margin: 0;
+  z-index: 1;
+  padding-top: 10vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
 .overlay {
   position: absolute;
   color: #f6f6f6;
