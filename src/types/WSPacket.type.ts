@@ -1,6 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Matter from 'matter-js';
 
+export type WSMessagePacket = {
+    username: string;
+    message: string;
+};
+
+export function isMessagePacket(object: any): object is WSMessagePacket {
+    return ('username' in object && 'message' in object);
+}
+
 export type WSPlayerPacket = {
     username: string;
     position: Matter.Vector;

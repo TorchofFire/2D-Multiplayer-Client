@@ -1,5 +1,5 @@
 import { player } from '../main';
-import { WSPlayerPacket, isMovableObjectPacket, isPlayerDisconnectPacket, isPlayerPacket } from '../types/WSPacket.type';
+import { WSPlayerPacket, isMessagePacket, isMovableObjectPacket, isPlayerDisconnectPacket, isPlayerPacket } from '../types/WSPacket.type';
 import { messageService } from './message.service';
 import { moveableObjectService } from './moveableObjects.service';
 import { multiplayerService } from './multiplayer.service';
@@ -26,9 +26,22 @@ class WebSocketService {
         };
         this.ws.onmessage = (event): void => {
             const packet = JSON.parse(`${event.data}`);
-            if (isPlayerPacket(packet)) multiplayerService.updatePlayer(packet);
-            if (isMovableObjectPacket(packet)) moveableObjectService.updateObject(packet);
-            if (isPlayerDisconnectPacket(packet)) multiplayerService.removePlayer(packet);
+            if (isPlayerPacket(packet)) {
+                multiplayerService.updatePlayer(packet);
+                return;
+            }
+            if (isMovableObjectPacket(packet)) {
+                moveableObjectService.updateObject(packet);
+                return;
+            }
+            if (isMessagePacket(packet)) {
+                messageService.receiveMessage(packet);
+                return;
+            }
+            // this should be last since it is the most simple packet. (can be confused with others)
+            if (isPlayerDisconnectPacket(packet)) {
+                multiplayerService.removePlayer(packet);
+            }
         };
     }
 

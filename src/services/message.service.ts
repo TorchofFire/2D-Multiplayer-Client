@@ -1,3 +1,5 @@
+import { WSMessagePacket } from '../types/WSPacket.type';
+
 const messagesDiv = document.querySelector('.messages');
 
 class MessageService {
@@ -9,7 +11,12 @@ class MessageService {
 
         setTimeout(() => {
             newDiv.remove();
-        }, 5000);
+        }, 10000);
+    }
+
+    public receiveMessage(packet: WSMessagePacket): void {
+        const message = `${packet.username}: ${packet.message}`;
+        this.sendMessage(message);
     }
 }
 
