@@ -1,10 +1,17 @@
 import Matter from 'matter-js';
 
 export default class Character {
+
     constructor(x: number, y: number) {
+        const characterCollisionGroup = Matter.Body.nextGroup(true);
         this.body = Matter.Bodies.rectangle(x, y, 20, 70, {
             restitution: 0,
-            friction: 0
+            friction: 0,
+            collisionFilter: {
+                group: characterCollisionGroup,
+                category: 0x0002,
+                mask: 0x0001
+            }
         });
     }
 

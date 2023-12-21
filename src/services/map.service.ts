@@ -32,9 +32,9 @@ class MapService {
         Matter.Body.setAngle(this.addTrap({ x: 0, y: 820 }, 1090, 150, 0.3, { isStatic: true }), degreeToRadian(180));
 
         // underground section
-        this.addRect({ x: -350, y: 1190 }, 300, 300, { isStatic: true });
-        this.addRect({ x: 350, y: 1190 }, 300, 300, { isStatic: true });
-        this.addRect({ x: 0, y: 1490 }, 400, 300, { isStatic: true });
+        this.addRect({ x: -500, y: 1190 }, 600, 300, { isStatic: true });
+        this.addRect({ x: 500, y: 1190 }, 600, 300, { isStatic: true });
+        this.addRect({ x: 0, y: 1490 }, 800, 300, { isStatic: true });
         moveableObjectService.objects.push(this.addCirc({ x: 0, y: 1350 }, 50, { label: 'underground circle' }));
         this.addRect({ x: 0, y: 1025 }, 50, 250, { isStatic: true });
 

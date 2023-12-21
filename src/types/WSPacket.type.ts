@@ -3,22 +3,28 @@ import Matter from 'matter-js';
 
 export type WSPlayerPacket = {
     username: string;
-    positionX: number;
-    positionY: number;
+    position: Matter.Vector;
     velocity: Matter.Vector;
 };
 
 export function isPlayerPacket(object: any): object is WSPlayerPacket {
-    return 'username' in object; // username is a unique field to WSPlayerPacket
+    return ('username' in object && 'position' in object && 'velocity' in object);
+}
+
+export type WSPlayerDisconnectPacket = {
+    username: string;
+};
+
+export function isPlayerDisconnectPacket(object: any): object is WSPlayerPacket {
+    return 'username' in object;
 }
 
 export type WSMovableObjectPacket = {
     moveableObjectlabel: string;
-    positionX: number;
-    positionY: number;
+    position: Matter.Vector;
     velocity: Matter.Vector;
 };
 
 export function isMovableObjectPacket(object: any): object is WSMovableObjectPacket {
-    return 'moveableObjectlabel' in object; // moveableObjectlabel is a unique field to WSMovableObjectPacket
+    return ('moveableObjectlabel' in object && 'position' in object && 'velocity' in object);
 }

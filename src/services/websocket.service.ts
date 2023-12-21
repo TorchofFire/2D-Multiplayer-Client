@@ -1,5 +1,6 @@
 import { player } from '../main';
-import { WSPlayerPacket, isMovableObjectPacket, isPlayerPacket } from '../types/WSPacket.type';
+import { WSPlayerPacket, isMovableObjectPacket, isPlayerDisconnectPacket, isPlayerPacket } from '../types/WSPacket.type';
+import { messageService } from './message.service';
 import { moveableObjectService } from './moveableObjects.service';
 import { multiplayerService } from './multiplayer.service';
 
@@ -14,6 +15,7 @@ class WebSocketService {
 
         this.ws.onopen = (): void => {
             this.isReady = true;
+            messageService.sendMessage('Connected to Server');
         };
         this.ws.onerror = (): void => {
             console.error;
@@ -26,6 +28,7 @@ class WebSocketService {
             const packet = JSON.parse(`${event.data}`);
             if (isPlayerPacket(packet)) multiplayerService.updatePlayer(packet);
             if (isMovableObjectPacket(packet)) moveableObjectService.updateObject(packet);
+            if (isPlayerDisconnectPacket(packet)) multiplayerService.removePlayer(packet);
         };
     }
 
@@ -39,12 +42,11 @@ class WebSocketService {
         const packet: WSPlayerPacket = {
             username: player.username,
             velocity: roundedVelocity,
-            positionX: Math.round(player.body.position.x),
-            positionY: Math.round(player.body.position.y)
+            position: { x: Math.round(player.body.position.x), y: Math.round(player.body.position.y) }
         };
         if (this.lastPacket
-            && packet.positionX === this.lastPacket.positionX
-            && packet.positionY === this.lastPacket.positionY) {
+            && packet.position.x === this.lastPacket.position.x
+            && packet.position.y === this.lastPacket.position.y) {
             return;
         }
         this.lastPacket = packet;

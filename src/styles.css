@@ -100,9 +100,12 @@ body, html {
   cursor: pointer;
 }
 
-.debug {
+.messages {
   position: absolute;
-  color: crimson;
+  color: lightblue;
+  padding: 12px;
+  outline-color: black;
+  outline-width: 2px;
   z-index: 3;
   right: 0;
   bottom: 0;
