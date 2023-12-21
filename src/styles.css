@@ -101,12 +101,65 @@ body, html {
 }
 
 .messages {
-  position: absolute;
-  color: lightblue;
+  position: fixed;
+  color: rgba(173, 216, 230, 0.541);
+  max-height: 10%;
   padding: 12px;
-  outline-color: black;
-  outline-width: 2px;
   z-index: 3;
-  right: 0;
-  bottom: 0;
+  left: 0;
+  top: 40px;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: 0.3s;
+  width: 200px;
+
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(173, 216, 230, 0.021); /* Adjust thumb color */
+    border-radius: 6px; /* Adjust thumb border radius */
+  }
+  &::-webkit-scrollbar-track {
+    background-color: rgba(125, 157, 168, 0.041); /* Adjust track color */
+  }
+}
+
+.messages:hover {
+  color: lightblue;
+  max-height: 30%;
+  white-space: normal;
+  overflow-wrap: break-word;
+  overflow: visible;
+  overflow-y: auto;
+  width: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#messageInput {
+  position: fixed;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: lightblue;
+  font-size: 16px;
+  position: absolute;
+  max-height: 10%;
+  padding: 12px;
+  z-index: 3;
+  left: 0;
+  top: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: 0.3s;
+  width: 200px;
+}
+
+#messageInput:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#messageInput::placeholder {
+  color: rgba(173, 216, 230, 0.486);
 }

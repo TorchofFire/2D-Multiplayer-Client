@@ -16,7 +16,7 @@ class MultiplayerService {
         this.playersMap.set(packet.username, player);
         Matter.World.add(world, player.body);
         nameTagService.newTag(player.username);
-        messageService.sendMessage(`${player.username} has joined`);
+        messageService.sendClientMessage(`${player.username} has joined`);
     }
 
     public updatePlayer(packet: WSPlayerPacket): void {
@@ -36,7 +36,8 @@ class MultiplayerService {
         Matter.World.remove(world, player.body);
         this.players = this.players.filter(plyr => plyr !== player);
         this.playersMap.delete(player.username!);
-        messageService.sendMessage(`${player.username} has left`);
+        nameTagService.removeTag(player.username!);
+        messageService.sendClientMessage(`${player.username} has left`);
     }
 
     public inBetween(): void {

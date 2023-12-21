@@ -15,7 +15,7 @@ class WebSocketService {
 
         this.ws.onopen = (): void => {
             this.isReady = true;
-            messageService.sendMessage('Connected to Server');
+            messageService.sendClientMessage('Connected to Server');
         };
         this.ws.onerror = (): void => {
             console.error;
@@ -23,6 +23,7 @@ class WebSocketService {
         this.ws.onclose = (): void => {
             this.isReady = false;
             this.ws = undefined;
+            messageService.sendClientMessage('Lost Connection to Server');
         };
         this.ws.onmessage = (event): void => {
             const packet = JSON.parse(`${event.data}`);
@@ -45,7 +46,7 @@ class WebSocketService {
         };
     }
 
-    private sendPacket(packet: WSPlayerPacket): void {
+    private sendPlayerPacket(packet: WSPlayerPacket): void {
         this.ws?.send(JSON.stringify(packet));
     }
 
@@ -63,7 +64,7 @@ class WebSocketService {
             return;
         }
         this.lastPacket = packet;
-        this.sendPacket(packet);
+        this.sendPlayerPacket(packet);
     }
 }
 
