@@ -1,20 +1,19 @@
 import Matter from 'matter-js';
 import { render } from '../main';
 
-let zoom: number;
-let centerOfBounds: Matter.Vector;
-
 class GraphicsService {
+
+    zoom = 0;
+    centerOfBounds: Matter.Vector = { x: 0, y: 0 };
 
     public updateViewportCalculations(): void {
         if (!render.options.width) return;
-        zoom = (render.options.width / Math.abs(render.bounds.min.x - render.bounds.max.x));
-        centerOfBounds = Matter.Vector.div(Matter.Vector.add(render.bounds.min, render.bounds.max), 2);
+        this.zoom = (render.options.width / Math.abs(render.bounds.min.x - render.bounds.max.x));
+        this.centerOfBounds = Matter.Vector.div(Matter.Vector.add(render.bounds.min, render.bounds.max), 2);
     }
 
     public moveDivToBody(div: HTMLDivElement, body: Matter.Body, offset?: {x: number; y: number}): void {
-        if (!render.options.width) return;
-        const divPositionViewport = Matter.Vector.sub(body.position, centerOfBounds);
+        const divPositionViewport = Matter.Vector.sub(body.position, this.centerOfBounds);
 
         div.style.position = 'fixed';
         div.style.transform = 'translate(-50%, -50%)';
@@ -22,8 +21,8 @@ class GraphicsService {
             divPositionViewport.x += offset.x;
             divPositionViewport.y += offset.y;
         }
-        div.style.left = `${divPositionViewport.x * zoom + window.innerWidth / 2}px`;
-        div.style.top = `${divPositionViewport.y * zoom + window.innerHeight / 2}px`;
+        div.style.left = `${divPositionViewport.x * this.zoom + window.innerWidth / 2}px`;
+        div.style.top = `${divPositionViewport.y * this.zoom + window.innerHeight / 2}px`;
     }
 }
 

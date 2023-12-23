@@ -5,6 +5,8 @@ import { moveableObjectService } from './moveableObjects.service';
 
 class MapService {
 
+    collisionBodies: Matter.Body[] = [];
+
     public createLevel(): void {
         this.salutation();
     }
@@ -74,18 +76,21 @@ class MapService {
     private addRect(position: Matter.Vector, width: number, height: number, options?: Matter.IChamferableBodyDefinition): Matter.Body {
         const rect = Matter.Bodies.rectangle(position.x, position.y, width, height, options);
         Matter.World.add(world, rect);
+        this.collisionBodies.push(rect);
         return rect;
     }
 
     private addCirc(position: Matter.Vector, radius: number, options?: Matter.IChamferableBodyDefinition): Matter.Body {
         const circ = Matter.Bodies.circle(position.x, position.y, radius, options);
         Matter.World.add(world, circ);
+        this.collisionBodies.push(circ);
         return circ;
     }
 
     private addTrap(position: Matter.Vector, width: number, height: number, slope: number, options?: Matter.IChamferableBodyDefinition): Matter.Body {
         const trap = Matter.Bodies.trapezoid(position.x, position.y, width, height, slope, options);
         Matter.World.add(world, trap);
+        this.collisionBodies.push(trap);
         return trap;
     }
 }

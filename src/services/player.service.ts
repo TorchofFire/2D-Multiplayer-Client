@@ -1,11 +1,13 @@
 import Matter from 'matter-js';
 import { player, world } from '../main';
 import { timeManagerService } from './timeManager.service';
+import { raycastService } from './raycast.service';
 
 class PlayerService {
     public logic(): void {
         this.collisions();
         this.movement();
+        raycastService.raycast();
     }
 
     private collisions(): void {

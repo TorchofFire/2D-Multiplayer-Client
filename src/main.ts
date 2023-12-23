@@ -10,6 +10,7 @@ import { setupSettingsModal } from './settings';
 import { webSocketService } from './services/websocket.service';
 import { multiplayerService } from './services/multiplayer.service';
 import { nameTagService } from './services/nameTag.service';
+import { overlayService } from './services/overlay.service';
 
 setupSettingsModal();
 
@@ -47,6 +48,7 @@ function gameLoop(): void {
     cameraService.cameraToPlayer();
     graphicsService.updateViewportCalculations();
     nameTagService.moveTagsToPlayers();
+    overlayService.moveCrosshairToMouse();
 
     requestAnimationFrame(gameLoop);
 }

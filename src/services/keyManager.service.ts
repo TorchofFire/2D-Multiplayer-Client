@@ -3,24 +3,24 @@ import { player } from '../main';
 class KeyManagerService {
 
     keybinds = {
-        up: ' ',
-        down: 's',
-        left: 'a',
-        right: 'd'
+        up: [' ', 'w', 'ArrowUp'],
+        down: ['s', 'ArrowDown'],
+        left: ['a', 'ArrowLeft'],
+        right: ['d', 'ArrowRight']
     };
 
     public handleKeyDown(event: KeyboardEvent): void {
-        if (event.key === this.keybinds.up) player.movement.up = true;
-        if (event.key === this.keybinds.down) player.movement.down = true;
-        if (event.key === this.keybinds.left) player.movement.left = true;
-        if (event.key === this.keybinds.right) player.movement.right = true;
+        if (this.keybinds.up.includes(event.key)) player.movement.up = true;
+        if (this.keybinds.down.includes(event.key)) player.movement.down = true;
+        if (this.keybinds.left.includes(event.key)) player.movement.left = true;
+        if (this.keybinds.right.includes(event.key)) player.movement.right = true;
     }
 
     public handleKeyUp(event: KeyboardEvent): void {
-        if (event.key === this.keybinds.up) player.movement.up = false;
-        if (event.key === this.keybinds.down) player.movement.down = false;
-        if (event.key === this.keybinds.left) player.movement.left = false;
-        if (event.key === this.keybinds.right) player.movement.right = false;
+        if (this.keybinds.up.includes(event.key)) player.movement.up = false;
+        if (this.keybinds.down.includes(event.key)) player.movement.down = false;
+        if (this.keybinds.left.includes(event.key)) player.movement.left = false;
+        if (this.keybinds.right.includes(event.key)) player.movement.right = false;
     }
 }
 
