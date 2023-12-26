@@ -7,7 +7,7 @@ class PlayerService {
     public logic(): void {
         this.collisions();
         this.movement();
-        raycastService.raycast();
+        if (player.movement.down) raycastService.logic();
     }
 
     private collisions(): void {
