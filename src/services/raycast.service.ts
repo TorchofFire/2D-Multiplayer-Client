@@ -55,7 +55,7 @@ class RaycastService {
         // one to see where the ray intersects with the body
         // and gather other information
         for (let i = query.length - 1; i >= 0; i--) {
-            const bcols = Ray.bodyCollisions(raytest, query[i].bodyB); // CHECK IF I GOT THE CORRECT BODY HERE <------------------------------------------------------------------ !!!!
+            const bcols = Ray.bodyCollisions(raytest, query[i].parentA);
             for (let k = bcols.length - 1; k >= 0; k--) {
                 cols.push(bcols[k]);
             }
