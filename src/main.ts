@@ -56,6 +56,8 @@ gameLoop();
 
 document.addEventListener('keydown', event => keyManagerService.handleKeyDown(event));
 document.addEventListener('keyup', event => keyManagerService.handleKeyUp(event));
+document.addEventListener('mousedown', event => keyManagerService.handleMouseDown(event));
+document.addEventListener('mouseup', event => keyManagerService.handleMouseUp(event));
 
 window.addEventListener('resize', () => {
     render.options.width = window.innerWidth;

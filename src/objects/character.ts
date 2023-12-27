@@ -22,11 +22,14 @@ export default class Character {
 
     onFloor = false;
 
-    movement = {
-        up: false,
+    actions: {
+        [key: string]: boolean;
+    } = {
+        jump: false,
         down: false,
         left: false,
-        right: false
+        right: false,
+        shoot: false
     };
 
     body: Matter.Body;
