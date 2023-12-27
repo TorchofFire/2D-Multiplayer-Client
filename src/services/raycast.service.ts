@@ -10,21 +10,25 @@ class RaycastService {
         y: 0
     };
 
-    interpolatedMouse: Matter.Vector = {
-        x: 0,
-        y: 0
-    };
+    get interpolatedMouse(): Matter.Vector {
+        const adjustedMouse = { x: this.rawMouse.x - window.innerWidth / 2, y: this.rawMouse.y - window.innerHeight / 2 };
+        return Matter.Vector.mult(Matter.Vector.add(adjustedMouse, graphicsService.centerOfBounds), graphicsService.zoom);
+    }
 
     public logic(): void {
-        this.interpMouse();
         // found topic on raycasting for matter.js here https://github.com/liabru/matter-js/issues/181
-        const collisions = this.raycast(mapService.collisionBodies, player.body.position, this.interpolatedMouse);
+        const playerPos = player.body.position;
+        const endOfMouseRay = this.getEndOfMouseRay(playerPos, this.interpolatedMouse, 10000);
+        const collisions = this.raycast(mapService.collisionBodies, playerPos, endOfMouseRay);
         console.log(collisions);
     }
 
-    private interpMouse(): void {
-        const adjustedMouse = { x: this.rawMouse.x - window.innerWidth / 2, y: this.rawMouse.y - window.innerHeight / 2 };
-        this.interpolatedMouse = Matter.Vector.mult(Matter.Vector.add(adjustedMouse, graphicsService.centerOfBounds), graphicsService.zoom);
+    private getEndOfMouseRay(start: Matter.Vector, directionalPoint: Matter.Vector, distance: number): Matter.Vector {
+        const directionVector = Matter.Vector.sub(directionalPoint, start);
+        const magnitude = Math.sqrt(directionVector.x ** 2 + directionVector.y ** 2);
+        const unitVector = Matter.Vector.div(directionVector, magnitude);
+
+        return Matter.Vector.add(start, Matter.Vector.mult(unitVector, distance));
     }
 
     private raycast(bodies: Matter.Body[], s: Matter.Vector, e: Matter.Vector, sort = true): Matter.Bodies {
