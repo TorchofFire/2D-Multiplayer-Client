@@ -3,7 +3,6 @@ import { graphicsService } from './graphics.service';
 import { multiplayerService } from './multiplayer.service';
 
 const mainNametag = document.querySelector('.main-nametag') as HTMLDivElement;
-const graphicsDiv = document.querySelector('.graphics') as HTMLDivElement;
 
 class NameTagService {
     nametags: HTMLDivElement[] = [];
@@ -11,7 +10,7 @@ class NameTagService {
 
     private moveMainTagToPlayer(): void {
         if (!mainNametag || !render.options.width) return;
-        graphicsService.moveDivToBody(mainNametag, player.body, { x: 0, y: -50 });
+        graphicsService.moveDivToPosition(mainNametag, player.body.position, { x: 0, y: -50 });
     }
 
     public updateMainTag(name: string): void {
@@ -24,7 +23,7 @@ class NameTagService {
             if (!nametag.textContent) continue;
             const mPlayer = multiplayerService.playersMap.get(nametag.textContent);
             if (!mPlayer || !render.options.width) return;
-            graphicsService.moveDivToBody(nametag, mPlayer.body, { x: 0, y: -50 });
+            graphicsService.moveDivToPosition(nametag, mPlayer.body.position, { x: 0, y: -50 });
         }
     }
 
@@ -33,7 +32,7 @@ class NameTagService {
         const nametag = document.createElement('div');
         nametag.className = 'nametag';
         nametag.textContent = playerName;
-        graphicsDiv.appendChild(nametag);
+        graphicsService.graphicsDiv.appendChild(nametag);
         this.nametags.push(nametag);
         this.nametagsMap.set(playerName, nametag);
     }

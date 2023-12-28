@@ -110,7 +110,7 @@ export class Raycol {
     //  the ray collides with
     // param 'verts' - stores the vertices of the edge that
     //  the ray collides with
-    constructor(body: Matter.Body, point: Vector2, normal: Matter.Vector, verts: Matter.Vertices) {
+    constructor(body: Matter.Body, point: Vector2, normal: Vector2, verts: Matter.Vertices) {
         this.body = body;
         this.point = point;
         this.normal = normal;
@@ -119,7 +119,7 @@ export class Raycol {
 
     body: Matter.Body;
     point: Vector2;
-    normal: Matter.Vector;
+    normal: Vector2;
     verts: Matter.Vertices;
 }
 

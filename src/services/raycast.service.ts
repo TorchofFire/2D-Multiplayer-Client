@@ -1,6 +1,6 @@
 import Matter from 'matter-js';
 import { graphicsService } from './graphics.service';
-import { Ray, Vector2 } from '../objects/raycast';
+import { Ray, Raycol, Vector2 } from '../objects/raycast';
 import { mapService } from './map.service';
 import { player } from '../main';
 
@@ -11,16 +11,19 @@ class RaycastService {
     };
 
     get interpolatedMouse(): Matter.Vector {
-        const adjustedMouse = { x: this.rawMouse.x - window.innerWidth / 2, y: this.rawMouse.y - window.innerHeight / 2 };
-        return Matter.Vector.mult(Matter.Vector.add(adjustedMouse, graphicsService.centerOfBounds), graphicsService.zoom);
+        const adjustedMouse = Matter.Vector.div({
+            x: this.rawMouse.x - window.innerWidth / 2, y: this.rawMouse.y - window.innerHeight / 2
+        }, graphicsService.zoom);
+        return Matter.Vector.add(adjustedMouse, graphicsService.centerOfBounds);
     }
 
     public logic(): void {
         // found topic on raycasting for matter.js here https://github.com/liabru/matter-js/issues/181
         const playerPos = player.body.position;
-        const endOfMouseRay = this.getEndOfMouseRay(playerPos, this.interpolatedMouse, 10000);
+        const endOfMouseRay = this.getEndOfMouseRay(playerPos, this.interpolatedMouse, 5000);
         const collisions = this.raycast(mapService.collisionBodies, playerPos, endOfMouseRay);
-        console.log(collisions);
+
+        if (collisions[0]) graphicsService.createBulletImpact(collisions[0].point, collisions[0].normal.direction);
     }
 
     private getEndOfMouseRay(start: Matter.Vector, directionalPoint: Matter.Vector, distance: number): Matter.Vector {
@@ -31,9 +34,9 @@ class RaycastService {
         return Matter.Vector.add(start, Matter.Vector.mult(unitVector, distance));
     }
 
-    private raycast(bodies: Matter.Body[], s: Matter.Vector, e: Matter.Vector, sort = true): Matter.Bodies {
+    private raycast(bodies: Matter.Body[], s: Matter.Vector, e: Matter.Vector, sort = true): Raycol[] {
         // Credit to Technostalgic
-        // JS Code grabbed and turned into TS from pastebin link https://pastebin.com/7M2CvK29
+        // JS Code grabbed and converted into TS from pastebin link https://pastebin.com/7M2CvK29
 
         // convert the start & end parameters to my custom
         // 'Vector2' object type

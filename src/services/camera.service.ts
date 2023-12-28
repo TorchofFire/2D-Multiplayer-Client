@@ -1,4 +1,4 @@
-import Matter, { Vector } from 'matter-js';
+import Matter from 'matter-js';
 import { render, player } from '../main';
 import { timeManagerService } from './timeManager.service';
 
@@ -10,7 +10,7 @@ class CameraService {
         this.lookAt(player.body.position, 20);
     }
 
-    private lookAt(vector: Vector, quickness: number): void {
+    private lookAt(vector: Matter.Vector, quickness: number): void {
         const vectorMin = { x: vector.x - viewDistance, y: vector.y - viewDistance };
         const vectorMax = { x: vector.x + viewDistance, y: vector.y + viewDistance };
 
@@ -22,7 +22,7 @@ class CameraService {
         });
     }
 
-    private lerpVector(vectorA: Vector, vectorB: Vector, factor: number): Vector {
+    private lerpVector(vectorA: Matter.Vector, vectorB: Matter.Vector, factor: number): Matter.Vector {
         return {
             x: vectorA.x + factor * (vectorB.x - vectorA.x),
             y: vectorA.y + factor * (vectorB.y - vectorA.y)
