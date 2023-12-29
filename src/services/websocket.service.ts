@@ -11,7 +11,12 @@ class WebSocketService {
     private lastPacket: WSPlayerPacket | null = null;
 
     public connectToServer(ip: string): void {
-        this.ws = new WebSocket(`ws://${ip}`);
+        const portReg = /:\d+$/;
+        if (portReg.test(ip)) {
+            this.ws = new WebSocket(`ws://${ip}`);
+        } else {
+            this.ws = new WebSocket(`ws://${ip}:8080`);
+        }
 
         this.ws.onopen = (): void => {
             this.isReady = true;

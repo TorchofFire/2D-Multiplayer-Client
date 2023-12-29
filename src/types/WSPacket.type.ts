@@ -29,11 +29,13 @@ export function isPlayerDisconnectPacket(object: any): object is WSPlayerPacket 
 }
 
 export type WSMovableObjectPacket = {
-    moveableObjectlabel: string;
-    position: Matter.Vector;
-    velocity: Matter.Vector;
+    moveableObject: {
+        label: string;
+        position: Matter.Vector;
+        velocity: Matter.Vector;
+    }[];
 };
 
 export function isMovableObjectPacket(object: any): object is WSMovableObjectPacket {
-    return ('moveableObjectlabel' in object && 'position' in object && 'velocity' in object);
+    return ('moveableObject' in object);
 }
