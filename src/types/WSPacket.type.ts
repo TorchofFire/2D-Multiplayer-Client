@@ -1,6 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Matter from 'matter-js';
 
+export type WSHandShakePacket = {
+    username: string;
+    version: string;
+};
+
+export function isHandShakePacket(object: any): object is WSHandShakePacket {
+    return ('username' in object && 'version' in object);
+}
+
+export type WSInitPacket = {
+    players: WSPlayerPacket[];
+    moveableObjects: {
+        label: string;
+        position: Matter.Vector;
+        velocity: Matter.Vector;
+    }[];
+};
+
+export function isInitPacket(object: any): object is WSInitPacket {
+    return ('players' in object && 'moveableObjects' in object);
+}
+
 export type WSMessagePacket = {
     username: string;
     message: string;
@@ -29,7 +51,7 @@ export function isPlayerDisconnectPacket(object: any): object is WSPlayerPacket 
 }
 
 export type WSMovableObjectPacket = {
-    moveableObject: {
+    moveableObjects: {
         label: string;
         position: Matter.Vector;
         velocity: Matter.Vector;
@@ -37,5 +59,5 @@ export type WSMovableObjectPacket = {
 };
 
 export function isMovableObjectPacket(object: any): object is WSMovableObjectPacket {
-    return ('moveableObject' in object);
+    return ('moveableObjects' in object);
 }

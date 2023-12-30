@@ -6,9 +6,10 @@ const messagesDiv = document.querySelector('.messages') as Element;
 const messageInput = document.getElementById('messageInput') as HTMLInputElement;
 class MessageService {
 
-    public sendClientMessage(msg: string): void {
+    public sendClientMessage(msg: string, color?: string): void {
         const newDiv = document.createElement('div');
         newDiv.textContent = msg;
+        if (color) newDiv.style.color = color;
         messagesDiv.insertBefore(newDiv, messagesDiv.firstChild);
 
         setTimeout(() => {

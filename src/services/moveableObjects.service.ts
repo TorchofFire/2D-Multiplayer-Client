@@ -5,7 +5,7 @@ class MoveableObjectService {
     objects: Matter.Body[] = [];
 
     public updateObject(packet: WSMovableObjectPacket): void {
-        for (const moveableObject of packet.moveableObject) {
+        for (const moveableObject of packet.moveableObjects) {
             const object = this.objects.find(obj => obj.label === moveableObject.label);
             if (!object) return;
             const distance = Math.sqrt(

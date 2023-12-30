@@ -1,8 +1,9 @@
 import { player } from '../main';
-import { WSPlayerPacket, isMessagePacket, isMovableObjectPacket, isPlayerDisconnectPacket, isPlayerPacket } from '../types/WSPacket.type';
+import { WSHandShakePacket, WSPlayerPacket, isInitPacket, isMessagePacket, isMovableObjectPacket, isPlayerDisconnectPacket, isPlayerPacket } from '../types/WSPacket.type';
 import { messageService } from './message.service';
 import { moveableObjectService } from './moveableObjects.service';
 import { multiplayerService } from './multiplayer.service';
+import { getVersion } from '@tauri-apps/api/app';
 
 class WebSocketService {
 
@@ -18,19 +19,24 @@ class WebSocketService {
             this.ws = new WebSocket(`ws://${ip}:8080`);
         }
 
-        this.ws.onopen = (): void => {
-            this.isReady = true;
-            messageService.sendClientMessage('Connected to Server');
+        this.ws.onopen = async (): Promise<void> => {
+            if (!player.username) return;
+            const packet: WSHandShakePacket = {
+                username: player.username,
+                version: await getVersion().catch(() => { return 'unknown'; })
+            };
+            this.ws?.send(JSON.stringify(packet));
         };
         this.ws.onerror = (): void => {
             console.error;
         };
-        this.ws.onclose = (): void => {
+        this.ws.onclose = (event): void => {
             this.isReady = false;
             this.ws = undefined;
-            messageService.sendClientMessage('Lost Connection to Server');
+            messageService.sendClientMessage(`Disconnected from server | ${event.reason}`, 'red');
         };
         this.ws.onmessage = (event): void => {
+            this.isReady = true;
             const packet = JSON.parse(`${event.data}`);
             if (isPlayerPacket(packet)) {
                 multiplayerService.updatePlayer(packet);
@@ -42,6 +48,16 @@ class WebSocketService {
             }
             if (isMessagePacket(packet)) {
                 messageService.receiveMessage(packet);
+                return;
+            }
+            if (isInitPacket(packet)) {
+                messageService.sendClientMessage('Connected to Server', 'green');
+                for (const plyr of packet.players) {
+                    multiplayerService.updatePlayer(plyr);
+                }
+                moveableObjectService.updateObject({
+                    moveableObjects: packet.moveableObjects
+                });
                 return;
             }
             // this should be last since it is the most simple packet. (can be confused with others)

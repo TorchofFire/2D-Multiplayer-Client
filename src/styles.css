@@ -29,6 +29,7 @@ body, html {
 }
 
 .graphics {
+  cursor: none;
   position: absolute;
   color: #f6f6f6;
   margin: 0;
@@ -108,8 +109,9 @@ body, html {
 }
 
 .messages {
+  color: rgb(173, 216, 230);
   position: fixed;
-  color: rgba(173, 216, 230, 0.541);
+  opacity: 0.5;
   max-height: 10%;
   padding: 12px;
   z-index: 3;
@@ -133,7 +135,7 @@ body, html {
 }
 
 .messages:hover {
-  color: lightblue;
+  opacity: 1;
   max-height: 30%;
   white-space: normal;
   overflow-wrap: break-word;
